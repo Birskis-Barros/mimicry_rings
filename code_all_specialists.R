@@ -10,6 +10,8 @@ p <- 0.3 #strength of habitat selection
 n <- 10 #number of habitats
 h <- 0.25 #heritability 
 alfa <- 2 #crontoling trait matching 
+
+##Variables 
 z <-  runif(50,0,1) #trait value for each specie
 z <- as.vector(z)
 z0 <- z
