@@ -9,7 +9,7 @@ library(reshape2)
 library(ggplot2)
 library(tidyr)
 
-gen <- cbind(z.sg.10, teta.sp)
+gen <- cbind(z.sg.5, teta.sp)
 fenotipo.df = data.frame(fenotipo[1:100,])
 names(fenotipo.df) <- paste(rep(LETTERS[1:10], each = 5), 1:5, sep = "_")
 m_fen = melt(fenotipo.df)
@@ -17,13 +17,20 @@ m_fen$gen = rep(1:100, 5*10)
 m_fen$species <- rep(seq(from=1, to=50), each=100)
 m_fen$teta <- rep(teta.sp, each=100)
 m_fen = separate(m_fen, variable, c("habitat", "species_habitat"))
+#for a number of specialists = 5 
 for(a in 1:5){
   m_fen$habitat[which(m_fen$species==sg[a])] <- "SG"
 }
 
 teta.df <- data.frame(teta=unique(teta.sp))
-teta.df$habitat <- c(LETTERS[1:10], "SG")
 
+#for a number of specialists = 5 
+for (i in 1:5){
+  if (teta.sp[sg[i]] == teta.df$teta) {
+    teta.df$habitat[teta.sp[sg[i]] == teta.df$teta] = "SG"
+  }
+}
+teta.df$habitat[is.na(teta.df$habitat)] <- c(LETTERS[1:10])
 
 ggplot(m_fen, aes(gen, value, 
                   group = interaction(habitat, species), 
